@@ -1,8 +1,8 @@
 var app = require("express").createServer();
-var otters = require("otters").otters;
+var otters = require("./otters").otters;
 
 otters.random = function(){
-    return { "otter" : otters.photos[Math.floor(Math.random() * otters.photos.length);] }
+    return { "otter" : otters.photos[Math.floor(Math.random() * otters.photos.length)] };
 }
 
 app.get('/', function(req, res){
@@ -21,3 +21,4 @@ app.get('/count', function(req, res){
 });
 
 
+app.listen(3000);

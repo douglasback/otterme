@@ -15,7 +15,7 @@ app.get('/random', function(req, res){
     res.send(otters.random());
 });
 
-app.get('/see', function(req, res){
+app.get('/plz', function(req, res){
     res.contentType('text/html');
     res.send("<img src='" + otters.random().otter + "' alt='An otter!' />");
 });

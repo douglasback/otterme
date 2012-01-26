@@ -6,7 +6,7 @@ otters.random = function(){
 }
 
 app.get('/', function(req, res){
-    res.contentType('text/plain');
+    res.contentType('text/html');
     res.send("Here be Otters");
 });
 app.get('/random', function(req, res){
@@ -16,7 +16,7 @@ app.get('/random', function(req, res){
 
 
 app.get('/count', function(req, res){
-    res.contentType('text/plain');
+    res.contentType('text/html');
     res.send("Here be " + otters.photos.length + " otters.");
 });
 

@@ -17,7 +17,7 @@ app.get('/random', function(req, res){
 
 app.get('/count', function(req, res){
     res.contentType('application/json');
-    res.send({ "otter_count" : otters.photos.length + 1 };
+    res.send({ "otter_count" : otters.photos.length + 1 });
 });
 
 var port = process.env.PORT || 3000;

@@ -20,5 +20,5 @@ app.get('/count', function(req, res){
     res.send("Here be " + otters.photos.length + " otters.");
 });
 
-
-app.listen(3000);
+var port = process.env.PORT || 3000;
+app.listen(port);

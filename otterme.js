@@ -9,9 +9,15 @@ app.get('/', function(req, res){
     res.contentType('text/html');
     res.send("Here be Otters");
 });
+
 app.get('/random', function(req, res){
     res.contentType('application/json');
     res.send(otters.random());
+});
+
+app.get('/see', function(req, res){
+    res.contentType('text/html');
+    res.send("<img src='" + otters.random().otter + "' alt='An otter!' />");
 });
 
 

@@ -3,6 +3,10 @@ var otters = require("./otters").otters;
 
 otters.random = function(){
     return { "otter" : otters.photos[Math.floor(Math.random() * otters.photos.length)] };
+};
+
+otters.bomb = function(){
+    
 }
 
 app.get('/', function(req, res){
@@ -24,6 +28,9 @@ app.get('/plz', function(req, res){
 app.get('/count', function(req, res){
     res.contentType('application/json');
     res.send({ "otter_count" : otters.photos.length + 1 });
+});
+app.get('/bomb/:number', function(req,res){
+    
 });
 
 var port = process.env.PORT || 3000;

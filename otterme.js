@@ -1,20 +1,16 @@
-var app = require("express").createServer();
+var express = require("express");
+var app = module.exports = express.createServer();
 var otters = require("./otters").otters;
+var hogan = require("express-hogan.js")
 
-otters.random = function(){
-    return { "otter" : otters.photos[Math.floor(Math.random() * otters.photos.length)] };
-};
-
-otters.bomb = function(num){
-    var payload = { "otter_payload" : [] },
-        joy = num < otters.photos.length ? num : otters.photos.length,
-        tmpOtters = otters.photos.slice(0,otters.photos.length);
-    
-        for (var i=0; i < joy; i++){
-            payload.otter_payload.push(tmpOtters.splice([Math.floor(Math.random() * tmpOtters.length)], 1)[0]);
-        }
-    return payload.otter_payload.length > 0 ? payload : null;
-};
+app.configure(function(){
+    app.set('views', __dirname + '/views');
+    app.register('.html', hogan);
+    app.use(express.bodyParser());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    return app.use(express.static(__dirname + '/static'));
+});
 
 app.get('/', function(req, res){
     res.contentType('text/html');
@@ -22,24 +18,37 @@ app.get('/', function(req, res){
 });
 
 app.get('/random', function(req, res){
-    res.contentType('application/json');
-    res.send(otters.random());
+    res.json(otters.random());
 });
 
 app.get('/plz', function(req, res){
-    res.contentType('text/html');
-    res.send("<img src='" + otters.random().otter + "' alt='An otter!' />");
+    var photo = otters.random();
+    return res.render('otter.html', {
+        locals: {
+            otter: photo.otter,
+            credit: "Insert Credit Here",
+            id: photo.id
+            
+        }
+    });
 });
-
+app.get('/plz/:id', function(req, res){
+    var photo = otters.fetch(req.param("id"));
+    return res.render('otter.html', {
+        locals: {
+            otter: photo.otter,
+            credit: "Insert Credit Here",
+            id: photo.id
+            
+        }
+    });
+});
 
 app.get('/count', function(req, res){
-    res.contentType('application/json');
-    res.send({ "otter_count" : otters.photos.length + 1 });
+    res.json({ "otter_count" : otters.photos.length + 1 });
 });
 app.get('/bomb/:number', function(req,res){
-    res.contentType('application/json');
-    res.send(otters.bomb(req.param("number")));
-    console.log("Length of otters: " + otters.photos.length);
+    res.json(otters.bomb(req.param("number")));
 });
 
 var port = process.env.PORT || 3000;

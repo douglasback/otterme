@@ -16,5 +16,21 @@ var otters = { "photos" : [
     "http://www.otterproject.org/atf/cf/%7B1032ABCB-19F9-4CB6-8364-2F74F73B3013%7D/OTTER02.JPG",
     "http://www.splashswimschool.com/Portals/81129/images/RIver%20Otter-resized-600.jpg"
 ]};
-
+otters.random = function(){
+    var i = Math.floor(Math.random() * otters.photos.length);
+    return { "otter" : otters.photos[i], "id": i };
+};
+otters.fetch = function(i){
+    return parseInt(i, 10) ? { "otter" : otters.photos[i], "id" : i} : false;
+}
+otters.bomb = function(num){
+    var payload = { "otter_payload" : [] },
+        joy = num < otters.photos.length ? num : otters.photos.length,
+        tmpOtters = otters.photos.slice(0,otters.photos.length);
+    
+        for (var i=0; i < joy; i++){
+            payload.otter_payload.push(tmpOtters.splice([Math.floor(Math.random() * tmpOtters.length)], 1)[0]);
+        }
+    return payload.otter_payload.length > 0 ? payload : null;
+};
 exports.otters = otters;

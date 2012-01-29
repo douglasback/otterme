@@ -17,9 +17,6 @@ app.get('/', function(req, res){
     res.send("Here be Otters");
 });
 
-app.get('/random', function(req, res){
-    res.json(otters.random());
-});
 
 app.get('/plz', function(req, res){
     var photo = otters.random();
@@ -36,6 +33,7 @@ app.get('/plz/:id', function(req, res){
     var photo = otters.fetch(req.param("id"));
     return res.render('otter.html', {
         locals: {
+            title: "Otter " + photo.id,
             otter: photo.otter,
             credit: "Insert Credit Here",
             id: photo.id
@@ -44,11 +42,18 @@ app.get('/plz/:id', function(req, res){
     });
 });
 
-app.get('/count', function(req, res){
-    res.json({ "otter_count" : otters.photos.length + 1 });
+// ==================
+// = API v1 Methods =
+// ==================
+app.get('(?:/api/v1)?/random', function(req, res){
+    res.json(otters.random());
 });
-app.get('/bomb/:number', function(req,res){
-    res.json(otters.bomb(req.param("number")));
+
+app.get('(?:/api/v1)?/count', function(req, res){
+    res.json({ "otter_count" : otters.collection.length + 1 });
+});
+app.get('(?:/api/v1)?/bomb/:number', function(req,res){
+    res.json(otters.bomb(req.params.number));
 });
 
 var port = process.env.PORT || 3000;

@@ -64,7 +64,7 @@ p, li, dd { font-size: 1.0em; }
 img { max-width: 100%; }
 
 
-.otter { display: block; margin: 20px auto; padding: 5px; border: 1px solid #335031; background-color: #D2DFC6;}
+.otter { display: block; margin: 20px auto; padding: 5px; border: 1px solid #335031; background-color: #D2DFC6; max-height: 500px;}
 .kelp { width: 80%; margin: 0 auto; }
 
 .metadata { text-align: center; }

@@ -19,18 +19,6 @@ app.configure(function(){
 });
 
 
-function randomModel(Model, callback){ //
-    return Model.count({}, function(err, count){
-        var i = Math.floor(Math.random() * count);
-        Model.where({})
-        .select()
-        .skip(i)
-        .limit(1)
-        .run(function(err, data){
-            callback(err, data);
-        });
-    });
-};
 
 app.configure('production', function(){
     app.set('db-url', process.env.MONGOHQ_URL);
@@ -49,21 +37,12 @@ models.defineModels(mongoose, function(){
 
 
 app.get('/', function(req, res){
-    // res.send("Here be otters");
-    // Otter.findOne({},  function(err, res){
-    //     console.log(res);
-    // });
-    res.contentType('text/html');
-    Otter.findOne({}, function(err, otter){
-        res.send("<img src='" + otter.photo + "' alt='An otter!' />");
-    });
-    
-
+    res.send("Here be otters");
 });
 
 
 app.get('/plz', function(req, res){
-    randomModel(Otter, function(err, data){
+    otters.random(Otter, function(err, data){
         var otter = data.map(function(d){
             return { "otter"    : d.photo,
                      "credit"   : d.credit };
@@ -95,7 +74,7 @@ app.get('/plz/:id', function(req, res){
 // = API v1 Methods =
 // ==================
 app.get('(?:/api/v1)?/random', function(req, res){
-    randomModel(Otter, function(err, data){
+    otters.random(Otter, function(err, data){
         var otter = data.map(function(d){
             return { "otter"    : d.photo,
                      "credit"   : d.credit };
@@ -110,7 +89,7 @@ app.get('(?:/api/v1)?/count', function(req, res){
 });
 app.get('(?:/api/v1)?/bomb/:number', function(req,res){
     Otter.find({}, function(err, data){
-        res.send(otters.bombMongo(req.param("number"), data));
+        res.send(otters.bomb(req.param("number"), data));
     });
 });
 

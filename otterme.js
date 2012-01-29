@@ -1,7 +1,13 @@
-var express = require("express");
-var app = module.exports = express.createServer();
-var otters = require("./otters").otters;
-var hogan = require("express-hogan.js")
+
+var express = require("express"),
+    app = module.exports = express.createServer(),
+    otters = require("./otters").otters,
+    hogan = require("express-hogan.js"),
+    models = require("./app/database.js"),
+    mongoose = require('mongoose'),
+    db,
+    Otter;
+
 
 app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -12,21 +18,63 @@ app.configure(function(){
     return app.use(express.static(__dirname + '/static'));
 });
 
+
+function randomModel(Model, callback){ //
+    return Model.count({}, function(err, count){
+        var i = Math.floor(Math.random() * count);
+        Model.where({})
+        .select()
+        .skip(i)
+        .limit(1)
+        .run(function(err, data){
+            callback(err, data);
+        });
+    });
+};
+
+app.configure('production', function(){
+    app.set('db-url', process.env.MONGOHQ_URL);
+});
+app.configure('dev', function(){
+    app.set('db-url', process.env.OTTER_MONGO);
+});
+
+
+models.defineModels(mongoose, function(){
+    app.Otter = Otter = mongoose.model('Otter');
+    db = mongoose.connect(app.set('db-url'));
+});
+
+
+
+
 app.get('/', function(req, res){
+    // res.send("Here be otters");
+    // Otter.findOne({},  function(err, res){
+    //     console.log(res);
+    // });
     res.contentType('text/html');
-    res.send("Here be Otters");
+    Otter.findOne({}, function(err, otter){
+        res.send("<img src='" + otter.photo + "' alt='An otter!' />");
+    });
+    
+
 });
 
 
 app.get('/plz', function(req, res){
-    var photo = otters.random();
-    return res.render('otter.html', {
-        locals: {
-            otter: photo.otter,
-            credit: "Insert Credit Here",
-            id: photo.id
-            
-        }
+    randomModel(Otter, function(err, data){
+        var otter = data.map(function(d){
+            return { "otter"    : d.photo,
+                     "credit"   : d.credit };
+        });
+        console.log(otter);
+        return res.render('otter.html', {
+            locals: {
+                otter: otter[0].otter,
+                credit: otter[0].credit,
+            }
+        });
     });
 });
 app.get('/plz/:id', function(req, res){
@@ -42,18 +90,28 @@ app.get('/plz/:id', function(req, res){
     });
 });
 
+
 // ==================
 // = API v1 Methods =
 // ==================
 app.get('(?:/api/v1)?/random', function(req, res){
-    res.json(otters.random());
+    randomModel(Otter, function(err, data){
+        var otter = data.map(function(d){
+            return { "otter"    : d.photo,
+                     "credit"   : d.credit };
+        });
+        res.json(otter[0]);
+    });
 });
-
 app.get('(?:/api/v1)?/count', function(req, res){
-    res.json({ "otter_count" : otters.collection.length + 1 });
+    Otter.count({}, function(err, c){
+        res.json({ "otter_count" : c });
+    });
 });
 app.get('(?:/api/v1)?/bomb/:number', function(req,res){
-    res.json(otters.bomb(req.params.number));
+    Otter.find({}, function(err, data){
+        res.send(otters.bombMongo(req.param("number"), data));
+    });
 });
 
 var port = process.env.PORT || 3000;

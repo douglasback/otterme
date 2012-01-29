@@ -2,6 +2,7 @@
     "name" : "otterme",
     "version" : "0.1.0",
     "dependencies" : {
-        "express" : "2.5.6"
+        "express" : ">=2.5.6",
+        "mongoose" : ">=2.5.1"
     }
 }

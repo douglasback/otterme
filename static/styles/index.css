@@ -53,7 +53,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 /* = Start Here and Build up from 320px wide = */
 /* =========================================== */
 
-body { font-size: 62.5%; }
+body { font-size: 62.5%; background-color: #D4DAC4; }
 #wrapper { margin: 0 2em; font-size: 1.4em; }
 
 h1 { font-size: 2.3em; }
@@ -63,27 +63,38 @@ h4 { font-size: 1.2em; }
 p, li, dd { font-size: 1.0em; }
 img { max-width: 100%; }
 
-
-.otter { display: block; margin: 20px auto; padding: 5px; border: 1px solid #335031; background-color: #D2DFC6; max-height: 500px;}
-.kelp { width: 80%; margin: 0 auto; }
+header { background: #36650F; color: #A8C68B; border-bottom: 1px solid #435A28; 
+    -webkit-box-shadow: 0 1px 25px #434021;
+       -moz-box-shadow: 0 1px 25px #434021;
+        -ms-box-shadow: 0 1px 25px #434021;
+         -o-box-shadow: 0 1px 25px #434021;
+            box-shadow: 0 1px 25px #434021;}
+.logo { padding: 0.5em 1em; font-size: 3.0em; margin: 0; }
+.otter { display: block; margin: 20px auto; padding: 5px; border: 1px solid #335031; background-color: #D2DFC6; max-height: 500px; 
+    -webkit-border-radius: 3px; 
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
+.kelp { width: 100%; margin: 3em auto; }
 
 .metadata { text-align: center; }
 
 @media only screen and (min-width: 480px){
-    .kelp { width: 72%; margin: 0 auto; }
+    
  
 }
 
 
 @media only screen and (min-width: 768px){
-    .kelp { width: 66%; margin: 0 auto; }
+    .kelp { width: 80%; margin: 3em auto; }
 
 }
 
 
 @media only screen and (min-width: 992px){
-
-    #wrapper { width: 960px; margin: 0 auto; }
+    
+    .logo, #wrapper { width: 960px; margin: 0 auto; }
 /*    .kelp { width: 600px; margin: 0 auto; }*/
 
 }

@@ -1,7 +1,7 @@
 
 var express = require("express"),
     app = module.exports = express.createServer(),
-    otters = require("./otters").otters,
+    otters = require("./app/otters").otters,
     hogan = require("express-hogan.js"),
     models = require("./app/database.js"),
     mongoose = require('mongoose'),
@@ -47,7 +47,6 @@ app.get('/plz', function(req, res){
             return { "otter"    : d.photo,
                      "credit"   : d.credit };
         });
-        console.log(otter);
         return res.render('otter.html', {
             locals: {
                 otter: otter[0].otter,
